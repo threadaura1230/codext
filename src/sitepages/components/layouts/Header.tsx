@@ -4,13 +4,14 @@ import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { Menu, X, Rocket } from "lucide-react";
 import { cn } from "./utils";
+import MobileMenu from "./MobileMenu";
 
 const navLinks = [
-  { name: "Home", href: "#" },
-  { name: "Services", href: "#services" },
-  { name: "Pricing", href: "#pricing" },
-  { name: "Testimonials", href: "#testimonials" },
-  { name: "Blog", href: "#blog" },
+  { name: "Home", href: "/" },
+  { name: "Services", href: "/our-offers" },
+  { name: "Works", href: "/our-works" },
+  { name: "Blog", href: "/blog" },
+  { name: "Contact", href: "/contact-us" },
 ];
 
 const Header = () => {
@@ -28,8 +29,8 @@ const Header = () => {
   return (
     <header
       className={cn(
-        "fixed top-0 left-0 right-0 z-50 transition-all duration-300 px-6 py-4",
-        isScrolled ? "glass shadow-sm py-3" : "bg-transparent"
+        "fixed top-0 left-0 right-0 z-50 transition-all duration-300 px-6 py-4 border-b border-transparent",
+        isScrolled ? "bg-background/70 backdrop-blur-md border-border/50 shadow-sm py-3" : "bg-transparent"
       )}
     >
       <div className="max-w-7xl mx-auto flex items-center justify-between">
@@ -68,37 +69,18 @@ const Header = () => {
 
         {/* Mobile Menu Button */}
         <button
-          className="md:hidden text-foreground p-2"
+          className="md:hidden text-foreground p-2 relative z-50 rounded-full hover:bg-muted transition-colors"
           onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
         >
-          {mobileMenuOpen ? <X /> : <Menu />}
+          {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
         </button>
       </div>
 
-      {/* Mobile Menu Overlay */}
-      {mobileMenuOpen && (
-        <div className="absolute top-full left-0 right-0 bg-white shadow-xl border-t md:hidden p-6 animate-in slide-in-from-top duration-300">
-          <nav className="flex flex-col gap-4">
-            {navLinks.map((link) => (
-              <Link
-                key={link.name}
-                href={link.href}
-                className="text-lg font-medium text-muted-foreground hover:text-primary py-2"
-                onClick={() => setMobileMenuOpen(false)}
-              >
-                {link.name}
-              </Link>
-            ))}
-            <Link
-              href="#"
-              className="bg-gradient-premium text-white px-6 py-3 rounded-xl text-center font-semibold mt-4"
-              onClick={() => setMobileMenuOpen(false)}
-            >
-              Free Trial
-            </Link>
-          </nav>
-        </div>
-      )}
+      <MobileMenu 
+        isOpen={mobileMenuOpen} 
+        onClose={() => setMobileMenuOpen(false)} 
+        navLinks={navLinks} 
+      />
     </header>
   );
 };
